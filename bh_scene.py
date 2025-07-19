@@ -1,6 +1,3 @@
-# To render this scene, run the following command in your terminal:
-# manim -pql bh_scene.py PhysicalBlackHoleLattice BlackHoleEntropySketch
-
 from manim import *
 import numpy as np
 
@@ -135,7 +132,7 @@ class PhysicalBlackHoleLattice(ThreeDScene):
             "S": RED,      # Entropy
             "k_B": BLUE,   # Boltzmann Constant
             "A": GREEN,    # Area
-            "l": PURPLE, # Planck Length
+            "l": PURPLE,   # Planck Length
         }
 
         entropy_title = Text("Black Hole Entropy", font_size=46, t2c={"Entropy":TEAL})
