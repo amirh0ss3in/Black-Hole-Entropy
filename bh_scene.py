@@ -170,6 +170,8 @@ class PhysicalBlackHoleLattice(ThreeDScene):
         self.play(FadeOut(geometry, shift=DOWN), new_premise.animate.set_opacity(1), run_time=2.5)
 
         self.wait(4)
-        self.play(FadeOut(spacetime_visual), FadeOut(new_premise), run_time=1.5)
+        self.play(FadeOut(spacetime_visual), run_time=1.5)
         self.stop_ambient_camera_rotation()
+        self.play(new_premise.animate.move_to(ORIGIN))
+        self.wait(1)
 
