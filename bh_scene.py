@@ -477,14 +477,14 @@ class TwoDBlackHole(Scene):
             grid.add(circle)
 
         grid.move_to(ORIGIN)
-
+        r_bh = 1.7
         # STEP 3: Black Hole Circle (with subtle glow)
-        black_hole = Circle(radius=0.6, fill_color=BLACK, stroke_color=WHITE, stroke_opacity=0.15, stroke_width=1.5, fill_opacity=1)
+        black_hole = Circle(radius=r_bh, fill_color=BLACK, stroke_color=WHITE, stroke_opacity=0.15, stroke_width=1.5, fill_opacity=1)
 
-        glow = Circle(radius=1.1, color=BLUE_E, fill_opacity=0.1, stroke_opacity=0)
+        glow = Circle(radius=r_bh+0.6, color=BLUE_E, fill_opacity=0.1, stroke_opacity=0)
         glow.set_z_index(-1)
 
-        black_hole_group = VGroup(glow, black_hole)
+        # black_hole_group = VGroup(glow, black_hole)
 
         # STEP 4: Animate
         self.play(
@@ -492,9 +492,50 @@ class TwoDBlackHole(Scene):
             run_time=2.5
         )
         self.wait(0.3)
-        self.play(FadeIn(black_hole_group, scale=0.95), run_time=1.2)
+        self.play(FadeIn(glow, black_hole, scale=0.95), run_time=1.2)
 
         # Optional: Label
         label = Text("Black Hole", font_size=28, color=GRAY).next_to(black_hole, DOWN, buff=0.25)
         self.play(FadeIn(label), run_time=0.8)
         self.wait(1.5)
+
+        # STEP 6: Draw Schwarzschild radius (same as glow radius)
+        angle = PI / 4  # 45 degrees
+
+        # Dashed circle around origin
+        r_s = DashedVMobject(Circle(radius=r_bh, color=RED), num_dashes=60)
+
+        # Radius line at angle PI/4
+        end_point = r_bh * np.array([np.cos(angle), np.sin(angle), 0])
+        radius_line = Line(start=ORIGIN, end=end_point, color=RED)
+
+        # Label aligned with the angle direction
+        r_s_label = MathTex(r"r_s", color=RED)
+        r_s_label.next_to(radius_line.get_end(), direction=radius_line.get_unit_vector(), buff=0.2)
+
+        # Optional: rotate label so it follows the line
+        r_s_label.rotate(angle)
+
+        self.add(label)
+        self.wait(1)
+        self.play(
+            FadeOut(label, shift=DOWN),
+            Create(radius_line),
+            Create(r_s),
+            FadeIn(r_s_label),
+            run_time=2
+        )
+        self.wait(2)
+
+
+        r_s.set_z_index(3)
+        r_s_label.set_z_index(3)
+        entropy_eq.set_z_index(3)
+        black_hole.set_z_index(2)
+        radius_line.set_z_index(3)
+                
+        self.play(FadeOut(*[m for m in self.mobjects if m not in (r_s, r_s_label, entropy_eq, radius_line)]))
+
+        self.wait(1)
+        bh_2d = VGroup(r_s, radius_line, r_s_label)
+        
