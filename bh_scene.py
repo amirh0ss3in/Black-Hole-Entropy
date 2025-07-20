@@ -302,3 +302,53 @@ class WhatIsEntropy(Scene):
         # Clear the rectangle and label
         self.play(FadeOut(rect), FadeOut(multiplicity_label))
         self.wait(1)
+
+        # --- Step 1: Highlight one microstate row ---
+        microstate_rect = SurroundingRectangle(table[1], color=ORANGE, buff=0.15)
+        microstate_label = Text("Microstate", font_size=28, color=ORANGE).next_to(microstate_rect, RIGHT)
+
+        self.play(Create(microstate_rect), FadeIn(microstate_label))
+        self.wait(1)
+
+        # --- Step 2: Flash rectangles quickly around other microstate rows ---
+        for i in range(2, len(table)):
+            rect = SurroundingRectangle(table[i], color=ORANGE, buff=0.15)
+            self.play(FadeIn(rect), run_time=0.4)
+            self.play(FadeOut(rect), run_time=0.4)
+
+        self.wait(0.5)
+
+        self.play(FadeOut(microstate_label), FadeOut(microstate_rect))
+
+        # --- Step 3: Add vertical "Microstates" label on left of table ---
+        microstates_vertical = Text("Microstates", font_size=36, color=ORANGE).rotate(90)
+        microstates_vertical.next_to(table, LEFT, buff=1)
+        self.play(FadeIn(microstates_vertical))
+        self.wait(1)
+
+        # --- Step 4: Highlight one macrostate row (omega_eqs) ---
+        macrostate_rect = SurroundingRectangle(omega_eqs[0], color=PURPLE, buff=0.15)
+        macrostate_label = Text("Macrostate", font_size=28, color=PURPLE).next_to(macrostate_rect, RIGHT)
+
+        self.play(Create(macrostate_rect), FadeIn(macrostate_label))
+        self.wait(1)
+
+        # --- Step 5: Flash rectangles around other macrostates quickly ---
+        for i in range(1, len(omega_eqs)):
+            rect = SurroundingRectangle(omega_eqs[i], color=PURPLE, buff=0.15)
+            self.play(FadeIn(rect), run_time=0.4)
+            self.play(FadeOut(rect), run_time=0.4)
+
+        self.wait(0.5)
+
+        self.play(FadeOut(macrostate_label), FadeOut(macrostate_rect))
+
+        # --- Step 6: Add vertical "Macrostates" label on right of omega_eqs ---
+        macrostates_vertical = Text("Macrostates", font_size=30, color=PURPLE).rotate(PI/2)
+        macrostates_vertical.next_to(omega_eqs, LEFT, buff=0.5)
+
+        microstates_vertical = Text("Microstates", font_size=30, color=ORANGE).rotate(PI/2)
+        microstates_vertical.next_to(table, LEFT, buff=0.2)
+        
+        self.play(FadeIn(macrostates_vertical, microstates_vertical))
+        self.wait(2)
