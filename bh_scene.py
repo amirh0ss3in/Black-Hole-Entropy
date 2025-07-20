@@ -244,9 +244,17 @@ class WhatIsEntropy(Scene):
         table.add(header_row)
 
         for r in rows:
-            row = VGroup(*[Text(cell, font_size=30) for cell in r]).arrange(RIGHT, buff=1.5)
+            # Create Text objects with color based on content
+            colored_cells = []
+            for cell in r:
+                if cell == "H":
+                    colored_cells.append(Text(cell, font_size=30).set_color(BLUE))
+                elif cell == "T":
+                    colored_cells.append(Text(cell, font_size=30).set_color(RED))
+                else:
+                    colored_cells.append(Text(cell, font_size=30))
+            row = VGroup(*colored_cells).arrange(RIGHT, buff=1.5)
             table.add(row)
-
         table.arrange(DOWN, buff=0.4)
         table.move_to(ORIGIN)
 
@@ -273,7 +281,7 @@ class WhatIsEntropy(Scene):
         omega_eqs = VGroup(
             MathTex(r"\Omega", r"(3\text{ heads}) = 1"),
             MathTex(r"\Omega(2\text{ heads}) = 3"),
-            MathTex(r"\Omega(1\text{ head}) = 3"),
+            MathTex(r"\Omega(1\text{ heads})  = 3"),
             MathTex(r"\Omega(0\text{ heads}) = 1"),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.5).to_edge(RIGHT, buff=3)
 
@@ -352,3 +360,57 @@ class WhatIsEntropy(Scene):
         
         self.play(FadeIn(macrostates_vertical, microstates_vertical))
         self.wait(2)
+
+        # --- STEP 8: Show explosion of microstates for larger system ---
+        large_system_title = MathTex(r"\text{Now Imagine }100\text{ Coins...}", font_size=40).to_edge(UP)
+
+        # Right side (microstates info)
+        micro_expr = MathTex(r"2^{100}", font_size=44)
+        micro_label = Text("microstates", font_size=28)
+        micro_group = VGroup(micro_expr, micro_label).arrange(DOWN, buff=0.3).move_to(RIGHT * 3)
+
+        # Left side (macrostates info)
+        macro_expr = Tex(r"101", font_size=40)
+        macro_label = Text("macrostates", font_size=28)
+        macro_group = VGroup(macro_expr, macro_label).arrange(DOWN, buff=0.3).move_to(LEFT * 3)
+
+        # Below macro_group: the range 0,1,2,...,100
+        macro_mult = MathTex(r"0,\,1,\,2,\,\ldots,\,100", font_size=26).next_to(macro_group, DOWN, buff=0.3)
+
+        # Below micro_group: something like 2 \times 2 \times ... (to indicate exponential)
+        micro_range = MathTex(r"2 \times 2 \times \cdots \times 2", font_size=26).next_to(micro_group, DOWN, buff=0.3)
+
+        # Replacement for micro_expr (approximation)
+        micro_approx = MathTex(r"\approx 1.27 \times 10^{30}", font_size=44).move_to(micro_expr.get_center())
+
+        # Animation
+        self.play(FadeOut(table), FadeOut(omega_eqs), FadeOut(macrostates_vertical), FadeOut(microstates_vertical))
+        self.play(Write(large_system_title))
+        self.wait(0.5)
+
+        self.play(Write(macro_group), Write(micro_group))
+        self.wait(1)
+
+        self.play(Write(macro_mult), Write(micro_range))
+        self.wait(1)
+
+        # Transform 2^100 into the approximation
+        self.play(Transform(micro_expr, micro_approx))
+        self.wait(1.5)
+
+
+
+        # --- STEP 9: Show motivation for logarithm ---
+        # too_big = MathTex(r"S \propto \Omega", font_size=44).next_to(macro_count, DOWN, buff=1)
+        # better = MathTex(r"S = k_B \log \Omega", font_size=46).next_to(too_big, DOWN, buff=0.6)
+
+        # too_big.set_color_by_tex(r"S", RED)
+        # better.set_color_by_tex(r"S", RED)
+        # better.set_color_by_tex(r"k_B", BLUE)
+        # better.set_color_by_tex(r"\Omega", ORANGE)
+
+        # self.play(Write(too_big))
+        # self.wait(1)
+        # self.play(too_big.animate.set_color(RED).scale(1.1), run_time=0.5)
+        # self.play(FadeOut(too_big, shift=LEFT), FadeIn(better, shift=RIGHT))
+        # self.wait(2)
