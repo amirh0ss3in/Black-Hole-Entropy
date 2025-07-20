@@ -9,7 +9,7 @@
 *(As the 3D grid warps and the black hole sphere fades in, the camera slowly rotates)*
 
 > And normally, to make sense of this — you’d need Einstein’s general relativity.
-> You’d need the full machinery: spacetime tensors, differential geometry, event horizons.
+> You’d need the full machinery: spacetime tensors, differential geometry, and many other tools physcists use to understand black holes.
 
 *(Beat. The animation continues slowly turning. Silence for a second.)*
 
@@ -18,12 +18,7 @@
 
 ---
 
-🎬 **\[Cut to you sketching or writing on screen: “Entropy of a Black Hole”]**
-
 **Voiceover:**
-
-> No general relativity. No Hawking radiation. No quantum field theory in curved space.
-> Just Newton's law, Planck’s constant, and a curious mind.
 
 > I want to walk you through a thought experiment. One that helped me feel — really *feel* — the physics behind black holes, in a way that equations never quite did.
 
@@ -57,11 +52,9 @@
 
 > Let’s start with something simple: entropy. In physics, we often say:
 >
-> $$
-> $$
+> $$ S = k N $$
 
-S = k N
-]
+
 
 > where $S$ is entropy, $k$ is Boltzmann’s constant, and $N$ is the number of microstates — or really, the number of fundamental bits of information inside the system.
 
