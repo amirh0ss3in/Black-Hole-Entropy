@@ -538,4 +538,27 @@ class TwoDBlackHole(Scene):
 
         self.wait(1)
         bh_2d = VGroup(r_s, radius_line, r_s_label)
-        
+
+        # Sine-like photon oscillating horizontally inside the black hole
+        sine_amplitude = 0.2 * r_bh        # height of wave
+        sine_length =  2 * r_bh
+        sine_waves = 1                     # number of wave cycles
+
+        photon_curve = ParametricFunction(
+            lambda t: np.array([
+                t * sine_length - sine_length / 2,
+                sine_amplitude * np.sin(2 * np.pi * sine_waves * t),
+                0
+            ]),
+            t_range=[0, 1],
+            color=YELLOW,
+            stroke_width=3
+        )
+
+        # Position it at the center of the black hole
+        photon_curve.move_to(ORIGIN)
+
+        # Animate drawing the photon
+        self.play(Create(photon_curve), run_time=2)
+        self.wait(1)
+
