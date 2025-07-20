@@ -438,3 +438,55 @@ class WhatIsEntropy(Scene):
         final_form_2.set_color_by_tex(r"S", RED)
         self.play(Transform(too_big, final_form_2))
         self.wait(2)
+
+
+class TwoDBlackHole(Scene):
+    def construct(self):
+        entropy_eq = MathTex(r"S", r"=", r"k_B", r"N", font_size=46, substrings_to_isolate=["k_B"]).move_to(ORIGIN)
+        entropy_eq.set_color_by_tex(r"k_B", BLUE)
+        entropy_eq.set_color_by_tex(r"S", RED)
+        self.add(entropy_eq)
+        self.wait(2)
+        self.play(entropy_eq.animate.to_edge(UP))
+
+        # STEP 2: 2D Circular Grid Setup
+        grid = VGroup()
+        radius = 3.5
+        num_radial = 20
+        num_circular = 7
+
+        # Radial lines (more fine-grained and soft)
+        for i in range(num_radial):
+            angle = i * TAU / num_radial
+            end = radius * np.array([np.cos(angle), np.sin(angle), 0])
+            line = Line(ORIGIN, end, color=WHITE, stroke_opacity=0.25, stroke_width=1.2)
+            grid.add(line)
+
+        # Concentric circles
+        for j in range(1, num_circular + 1):
+            r = j * radius / num_circular
+            circle = Circle(radius=r, color=WHITE, stroke_opacity=0.2, stroke_width=1.2)
+            grid.add(circle)
+
+        grid.move_to(ORIGIN)
+
+        # STEP 3: Black Hole Circle (with subtle glow)
+        black_hole = Circle(radius=0.6, fill_color=BLACK, stroke_color=WHITE, stroke_opacity=0.15, stroke_width=1.5, fill_opacity=1)
+
+        glow = Circle(radius=1.1, color=BLUE_E, fill_opacity=0.1, stroke_opacity=0)
+        glow.set_z_index(-1)
+
+        black_hole_group = VGroup(glow, black_hole)
+
+        # STEP 4: Animate
+        self.play(
+            LaggedStartMap(Create, grid, lag_ratio=0.05),
+            run_time=2.5
+        )
+        self.wait(0.3)
+        self.play(FadeIn(black_hole_group, scale=0.95), run_time=1.2)
+
+        # Optional: Label
+        label = Text("Black Hole", font_size=28, color=GRAY).next_to(black_hole, DOWN, buff=0.25)
+        self.play(FadeIn(label), run_time=0.8)
+        self.wait(1.5)
