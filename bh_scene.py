@@ -172,3 +172,38 @@ class PhysicalBlackHoleLattice(ThreeDScene):
         self.play(new_premise.animate.move_to(ORIGIN))
         self.wait(1)
 
+
+class WhatIsEntropy(Scene):
+    def construct(self):
+        colors = {
+            "S": RED,      # Entropy
+            "k_B": BLUE,   # Boltzmann Constant
+            "A": GREEN,    # Area
+            "l": PURPLE,   # Planck Length
+        }
+
+        entropy_title = Text("Black Hole Entropy", font_size=46, t2c={"Entropy":TEAL})
+
+        entr = MathTex(r"S=", substrings_to_isolate="S")
+        bh_formula = MathTex(
+            "k_B",
+            "A",
+            r"\over",
+            "4",
+            r"l",                       
+            r"^2",                        
+            font_size=46,
+        )
+
+        entr.set_color_by_tex(r"S", colors["S"])
+        bh_formula.set_color_by_tex("k_B", colors["k_B"])
+        bh_formula.set_color_by_tex("A", colors["A"])
+        bh_formula.set_color_by_tex(r"l", colors["l"])
+        bh_formula.next_to(entr, RIGHT)
+        bh_formula_entr = VGroup(bh_formula, entr)
+
+        new_premise = VGroup(entropy_title, bh_formula_entr).arrange(DOWN, buff=0.6)
+        new_premise.move_to(ORIGIN)
+
+        self.add(new_premise)
+        self.wait(4)
