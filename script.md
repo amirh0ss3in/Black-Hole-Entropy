@@ -20,16 +20,60 @@
 
 **Voiceover:**
 
-> I want to walk you through a thought experiment. One that helped me feel — really *feel* — the physics behind black holes, in a way that equations never quite did.
+> Today, I want to walk you through a thought experiment. One that helped me feel — and I mean really *feel* — the physics behind black holes, in a way that equations never quite did.
 
-> Let’s start simple.
+> But before we calculate the Entropy of a black hole, we should know what Entropy even is.
 
-*(Scene fades to white or paper texture. Clean title appears.)*
+🎙 **Voiceover (gentle, engaging, almost like storytelling):**
+
+> Imagine flipping three coins — a penny, a nickel, and a dime.
+> Each one lands either heads or tails. Simple enough.
+
+> And if we’re feeling thorough... we could list out *all* the possibilities.
+> Just eight in total — not too bad.
+
+*(The table fills in one by one, quietly.)*
+
+> But here’s something interesting.
+> Some outcomes happen more often than others.
+
+> There’s only one way to get all heads.
+> But there are three different ways to get *two* heads and one tail.
+
+*(The multiplicities begin to appear.)*
+
+> That little difference — the number of ways something can happen —
+> That’s called **multiplicity**, and we often write it as this symbol: **Ω**.
+
+> And here’s the beautiful part:
+
+> **Entropy**, at its heart, is just a way of counting possibilities.
+> The more ways there are to arrange something without changing how it *looks*...
+> the more entropy it has.
 
 ---
 
-🖊️ **Title Card (spoken and shown):**
-**“You Don’t Need General Relativity to Understand Black Holes”**
+🎙 **Voiceover (soft, contemplative pause):**
+
+> So when people say a black hole has entropy...
+> They’re saying that even though it looks like this smooth, perfect thing —
+> There's a deep, invisible richness underneath.
+> Countless ways it could have come to be.
+
+> Ways we might never see... but ways that matter.
+
+> And all those unseen possibilities — they’re what give a black hole
+> more entropy than almost anything else in the universe.
+
+---
+
+🎙 **Voiceover (inviting, a sense of excitement):**
+
+> In the next part, we’ll try something playful.
+> We’ll see if we can *estimate* that entropy — not with heavy math,
+> but with nothing more than simple logic... and a few good questions.
+
+> It might surprise you... just how far you can get.
 
 
 📚 **\[Part 1 – Setting up the question]**
