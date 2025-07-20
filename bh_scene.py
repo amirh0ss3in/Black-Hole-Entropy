@@ -616,3 +616,48 @@ class TwoDBlackHole(Scene):
         solve4 = MathTex(r"r_s = \frac{2GM}{c^2}").move_to(solve1)
         self.play(Transform(solve1, solve4))
         self.wait(2)
+
+        solve5 = MathTex(r"\frac{\lambda}{2} = \frac{2GM}{c^2}").move_to(solve1)
+
+        lambda_line = DashedLine(
+            start=LEFT * r_bh, end=RIGHT * r_bh,
+            color=GRAY, stroke_width=2, dash_length=0.1
+        ).move_to(photon_curve.get_center())
+
+        # Label for λ below the line, centered
+        lambda_label = MathTex(r"\lambda", color=WHITE).next_to(lambda_line, DOWN, buff=0.2)
+
+        self.play(Transform(solve1, solve5), Create(lambda_line), FadeIn(lambda_label))
+        self.wait(1)
+
+        # Step: Photon energy formula E = hc / λ
+        energy_eq = MathTex(r"\varepsilon = \frac{hc}{\lambda}", font_size=44)
+        energy_eq.next_to(solve1, DOWN, buff=0.5)
+
+        self.play(Write(energy_eq))
+        self.wait(1)
+
+        # Step: Total energy relation N ε = M c^2
+        total_energy_eq = MathTex(r"N \varepsilon = M c^2", font_size=44)
+        total_energy_eq.next_to(energy_eq, DOWN, buff=0.6)
+
+        self.play(Write(total_energy_eq))
+        self.wait(1)
+
+        # Step: Derive N using previous equations
+        N_eq = MathTex(
+            r"N = \frac{M c^2}{\varepsilon} = \frac{M c^2 \lambda}{h c}",
+            font_size=44
+        ).move_to(ORIGIN+2*RIGHT)
+
+        self.play(FadeOut(energy_eq, total_energy_eq, solve1), Write(N_eq))
+        self.wait(1.2)
+
+        # Substitute λ = 4GM / c^2
+        N_sub_eq = MathTex(
+            r"N = \frac{M c^2}{\varepsilon} = \frac{M c^2 \cdot \frac{4GM}{c^2}}{h c} = \frac{4 G M^2}{h c}",
+            font_size=44
+        ).move_to(N_eq)
+
+        self.play(Transform(N_eq, N_sub_eq))
+        self.wait(2)
