@@ -271,7 +271,7 @@ class WhatIsEntropy(Scene):
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.5).to_edge(RIGHT, buff=2)
 
         omega_eqs = VGroup(
-            MathTex(r"\Omega(3\text{ heads}) = 1"),
+            MathTex(r"\Omega", r"(3\text{ heads}) = 1"),
             MathTex(r"\Omega(2\text{ heads}) = 3"),
             MathTex(r"\Omega(1\text{ head}) = 3"),
             MathTex(r"\Omega(0\text{ heads}) = 1"),
@@ -290,3 +290,15 @@ class WhatIsEntropy(Scene):
         )
 
         self.wait(2)
+
+
+        # Draw rectangle and write "Multiplicity"
+        rect = SurroundingRectangle(omega_eqs[0][0], color=YELLOW, buff=0.1)
+        multiplicity_label = Text("Multiplicity", font_size=30).next_to(rect, UP)
+
+        self.play(Create(rect), FadeIn(multiplicity_label))
+        self.wait(2)
+
+        # Clear the rectangle and label
+        self.play(FadeOut(rect), FadeOut(multiplicity_label))
+        self.wait(1)
