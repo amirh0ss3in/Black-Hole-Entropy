@@ -244,7 +244,7 @@ class WhatIsEntropy(Scene):
         table.add(header_row)
 
         for r in rows:
-            row = VGroup(*[Text(cell, font_size=30) for cell in r]).arrange(RIGHT, buff=0.8)
+            row = VGroup(*[Text(cell, font_size=30) for cell in r]).arrange(RIGHT, buff=1.5)
             table.add(row)
 
         table.arrange(DOWN, buff=0.4)
@@ -263,6 +263,13 @@ class WhatIsEntropy(Scene):
         self.wait(0.5)
 
         # STEP 7: Show multiplicities on the right
+        getting_eqs = VGroup(
+            MathTex(r"\text{getting }", "3", r"\text{ heads}", r"=1", r"\text{ way}"),
+            MathTex(r"\text{getting }", "2", r"\text{ heads}", r"=3", r"\text{ ways}"),
+            MathTex(r"\text{getting }", "1", r"\text{ heads}", r"=3", r"\text{ ways}"),
+            MathTex(r"\text{getting }", "0", r"\text{ heads}", r"=1", r"\text{ way}")
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.5).to_edge(RIGHT, buff=2)
+
         omega_eqs = VGroup(
             MathTex(r"\Omega(3\text{ heads}) = 1"),
             MathTex(r"\Omega(2\text{ heads}) = 3"),
@@ -270,8 +277,16 @@ class WhatIsEntropy(Scene):
             MathTex(r"\Omega(0\text{ heads}) = 1"),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.5).to_edge(RIGHT, buff=3)
 
-        for eq in omega_eqs:
-            eq.set_color_by_tex(r"\Omega", colors[r"\Omega"])
+        self.play(LaggedStartMap(FadeIn, getting_eqs, lag_ratio=0.3), run_time=3)
+        self.wait(2)
+        self.play(
+            LaggedStart(*[
+                FadeOut(getting_eq, shift=LEFT) for getting_eq in getting_eqs
+            ], lag_ratio=0.2),
+            LaggedStart(*[
+                FadeIn(omega_eq, shift=RIGHT) for omega_eq in omega_eqs
+            ], lag_ratio=0.2),
+            run_time=3
+        )
 
-        self.play(LaggedStartMap(FadeIn, omega_eqs, lag_ratio=0.3), run_time=3)
         self.wait(2)
