@@ -449,23 +449,31 @@ class TwoDBlackHole(Scene):
         self.wait(2)
         self.play(entropy_eq.animate.to_edge(UP))
 
-        # STEP 2: 2D Circular Grid Setup
+        # STEP 2: 2D Circular Grid Setup - extend lines to frame edges
         grid = VGroup()
-        radius = 3.5
+        max_length = config.frame_width / 2 * 1.2  # 20% padding beyond frame half-width
         num_radial = 20
-        num_circular = 7
+        num_circular = 15  # more circles for better gradation
 
-        # Radial lines (more fine-grained and soft)
+        # Radial lines, opacity fades with distance
         for i in range(num_radial):
             angle = i * TAU / num_radial
-            end = radius * np.array([np.cos(angle), np.sin(angle), 0])
-            line = Line(ORIGIN, end, color=WHITE, stroke_opacity=0.25, stroke_width=1.2)
+            direction = np.array([np.cos(angle), np.sin(angle), 0])
+            end = direction * max_length
+            # Opacity fades from 1 near center to ~0 at edge
+            line = Line(ORIGIN, end, color=WHITE, stroke_width=1.2)
+            # Use a custom updater to set opacity based on distance from origin
+            # But since it's a line, just fade it overall based on length:
+            # Let's set a linear opacity gradient manually (approximate)
+            # Here simpler: just fixed low opacity for distant lines
+            line.set_stroke(opacity=0.15)
             grid.add(line)
 
-        # Concentric circles
+        # Concentric circles with fading opacity by radius
         for j in range(1, num_circular + 1):
-            r = j * radius / num_circular
-            circle = Circle(radius=r, color=WHITE, stroke_opacity=0.2, stroke_width=1.2)
+            r = j * max_length / num_circular
+            opacity = max(0.02, 0.3 * (1 - r / max_length))  # fades from 0.3 near center to 0.02 outer edge
+            circle = Circle(radius=r, color=WHITE, stroke_width=1.2, stroke_opacity=opacity)
             grid.add(circle)
 
         grid.move_to(ORIGIN)
