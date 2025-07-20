@@ -567,3 +567,52 @@ class TwoDBlackHole(Scene):
 
         self.play(panel.animate.to_edge(LEFT))
         self.wait(1)
+
+        # Gravitational force equation
+        grav_eq = MathTex(r"F = \frac{GMm}{r^2}").move_to(0.1*RIGHT + UP)
+        self.play(Write(grav_eq))
+        self.wait(1)
+        self.play(grav_eq.animate.shift(UP))
+
+        # Potential energy equation (for escape velocity)
+        potential_eq = MathTex(r"U = -\frac{GMm}{r}").next_to(grav_eq, DOWN, buff=0.8)
+        self.play(Write(potential_eq))
+        self.wait(1)
+
+        # Group equations and add brace
+        energy_group = VGroup(grav_eq, potential_eq)
+        brace = Brace(energy_group, LEFT, color=YELLOW)
+        self.play(FadeIn(brace))
+        self.wait(1)
+
+        # Show derivation arrow
+        arrow = Arrow(start=0.9*LEFT, end=0.4*RIGHT, color=YELLOW).next_to(energy_group, RIGHT, buff=0.1)
+        self.play(GrowArrow(arrow))
+        self.wait(0.5)
+
+        # Escape velocity derivation (energy conservation)
+        solve1 = MathTex(r"\frac{1}{2}mv_e^2", "-", r"\frac{GMm}{r}", "=", "0").next_to(arrow, RIGHT, buff=0.2)
+        self.play(Write(solve1))
+        self.wait(2)
+
+        # Simplify to escape velocity formula
+        solve2 = MathTex(r"v_e^2 = \frac{2GM}{r}").move_to(solve1)
+        self.play(Transform(solve1, solve2))
+        self.wait(1)
+
+        # Transition to Schwarzschild radius
+        self.play(
+            FadeOut(arrow, brace, energy_group, shift=LEFT),
+            solve1.animate.shift(LEFT * 2.5),
+        )
+        self.wait(1)
+
+        # Set escape velocity equal to speed of light
+        solve3 = MathTex(r"c^2 = \frac{2GM}{r}").move_to(solve1)
+        self.play(Transform(solve1, solve3))
+        self.wait(1)
+
+        # Final Schwarzschild radius equation
+        solve4 = MathTex(r"r_s = \frac{2GM}{c^2}").move_to(solve1)
+        self.play(Transform(solve1, solve4))
+        self.wait(2)
