@@ -401,16 +401,28 @@ class WhatIsEntropy(Scene):
 
 
         # --- STEP 9: Show motivation for logarithm ---
-        # too_big = MathTex(r"S \propto \Omega", font_size=44).next_to(macro_count, DOWN, buff=1)
-        # better = MathTex(r"S = k_B \log \Omega", font_size=46).next_to(too_big, DOWN, buff=0.6)
+        # Initial equation
+        too_big = MathTex(r"S", r"\propto", r"\Omega", font_size=46).move_to(ORIGIN)
+        too_big.set_color_by_tex(r"S", RED)
 
-        # too_big.set_color_by_tex(r"S", RED)
-        # better.set_color_by_tex(r"S", RED)
-        # better.set_color_by_tex(r"k_B", BLUE)
-        # better.set_color_by_tex(r"\Omega", ORANGE)
+        # Initial appearance
+        self.play(
+            FadeOut(large_system_title, shift=UP),
+            FadeOut(micro_group, micro_range, shift=RIGHT),
+            FadeOut(macro_group, macro_mult, shift=LEFT),
+            FadeIn(too_big)
+        )
+        self.wait(2)
 
-        # self.play(Write(too_big))
-        # self.wait(1)
-        # self.play(too_big.animate.set_color(RED).scale(1.1), run_time=0.5)
-        # self.play(FadeOut(too_big, shift=LEFT), FadeIn(better, shift=RIGHT))
-        # self.wait(2)
+        # First transformation: Omega -> log Omega
+        log_form = MathTex(r"S", r"\propto", r"\log \Omega", font_size=46).move_to(ORIGIN)
+        log_form.set_color_by_tex(r"S", RED)
+        self.play(Transform(too_big, log_form))
+        self.wait(2)
+
+        # Second transformation: log Omega -> k_B log Omega
+        final_form = MathTex(r"S", r"\propto", r"k_B", r"\log \Omega", font_size=46, substrings_to_isolate=["k_B"]).move_to(ORIGIN)
+        final_form.set_color_by_tex(r"k_B", BLUE)
+        final_form.set_color_by_tex(r"S", RED)
+        self.play(Transform(too_big, final_form))
+        self.wait(2)
