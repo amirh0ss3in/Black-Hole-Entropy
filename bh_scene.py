@@ -661,3 +661,20 @@ class TwoDBlackHole(Scene):
 
         self.play(Transform(N_eq, N_sub_eq))
         self.wait(2)
+
+        N_sub_eq_2 = MathTex(
+            r"N = \frac{4 G M^2}{h c}",
+            font_size=44
+        ).move_to(N_sub_eq)
+
+
+        self.play(entropy_eq.animate.next_to(N_sub_eq, UP), Transform(N_eq, N_sub_eq_2))
+        self.wait(2)
+
+        bh_formula = MathTex(   
+            r"S = \frac{4 k_B G M^2}{hc}",
+            font_size=46,
+        )
+        bh_2d_new = VGroup(bh_2d, lambda_label, lambda_line)
+        self.play(Transform(entropy_eq, bh_formula), FadeOut(N_eq), FadeOut(bh_2d_new))
+        self.wait(2)
