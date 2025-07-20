@@ -118,208 +118,39 @@
 
 > It links probability and statistics to energy and temperature.
 
-*(Final form appears: S ∝ k\_B log Ω)*
 
-> And there it is.
+*(Final form appears: $S = k_B \log \Omega$)*
+
+> **And there it is.**
 
 > The bridge between the microscopic world of possibilities...
 > and the macroscopic reality of heat, disorder — and even black holes.
 
+🎙 **Voiceover (warm, connecting the dots):**
 
-🎙 **Voiceover (soft, contemplative pause):**
-
-> So when people say a black hole has entropy...
-> They’re saying that even though it looks like this smooth, perfect thing —
-> There's a deep, invisible richness underneath.
-> Countless ways it could have come to be.
-
-> Ways we might never see... but ways that matter.
-
-> And all those unseen possibilities — they’re what give a black hole
-> more entropy than almost anything else in the universe.
-
----
-
-🎙 **Voiceover (inviting, a sense of excitement):**
-
-> In the next part, we’ll try something playful.
-> We’ll see if we can *estimate* that entropy — not with heavy math,
-> but with nothing more than simple logic... and a few good questions.
-
-> It might surprise you... just how far you can get.
-
-
-📚 **\[Part 1 – Setting up the question]**
-
-**You (voiceover):**
-
-> We want to understand how much information — or entropy — is hidden inside a black hole.
-> The final formula, discovered by Hawking and Bekenstein, is:
->
-> $$ S = \frac{k A c^3}{4 \hbar G} $$
-
-
-> But what if you had never heard of this equation — and you just wanted to guess the entropy using dimensional analysis?
-
----
-
-🧠 **\[Part 2 – What is entropy?]**
-
-**You (explaining):**
-
-> Let’s start with something simple: entropy. In physics, we often say:
->
-> $$ S = k N $$
-
-
-
-> where $S$ is entropy, $k$ is Boltzmann’s constant, and $N$ is the number of microstates — or really, the number of fundamental bits of information inside the system.
-
-> So our goal is to estimate $N$, the number of bits that can fit inside a black hole.
-
----
-
-🧪 **\[Part 3 – What units do we care about?]**
-
-**You (voiceover):**
-
-> Let’s figure out how many “bits” can fit into a black hole just by playing with **units** — using the constants:
->
-> * $G$: Newton’s gravitational constant
-> * $\hbar$: Planck’s constant
-> * $c$: speed of light
-
-> These are the three pillars of modern physics: **gravity, quantum mechanics, and relativity**.
-
----
-
-🧲 **\[Part 4 – Finding the dimensions]**
-
-> First, let’s recall the units of each constant:
-
-* From **Newton’s law**:
+> Now, if the number of possible microstates, $\Omega$, grows exponentially with the size of the system — let's say we have $N$ independent components, like our coins, and each can be in $m$ distinct states — then the total number of microstates is:
 
 $$
-F = \frac{G m_1 m_2}{r^2} \Rightarrow [G] = \frac{\text{N} \cdot \text{m}^2}{\text{kg}^2}
+\Omega = m^N.
 $$
 
-* From **F = ma**:
+> *(Visual: exponential growth curve and coins multiplying)*
+
+> Taking the logarithm and applying Boltzmann's constant...
 
 $$
-[F] = \text{kg} \cdot \text{m/s}^2
-\Rightarrow [G] = \frac{\text{m}^3}{\text{kg} \cdot \text{s}^2}
+S = k_B \log \Omega = k_B \log (m^N) = k_B N \log m.
 $$
 
-* Planck’s constant $\hbar$:
+> This equation reveals that the entropy ($S$) scales linearly with the number of components ($N$). The term $k_B \log m$ represents the entropy per component.
 
-$$
-[\hbar] = \text{J} \cdot \text{s} = \text{kg} \cdot \text{m}^2 / \text{s}
-$$
+> In simpler terms, this is why we say entropy is **extensive**: if you double the number of coins, you roughly double the total entropy. The fundamental idea is that the total amount of disorder is proportional to the size of the system.
 
-* Speed of light $c$:
+> *(Small note: We're simplifying things a bit here. In more realistic systems — like gases, photons, or black holes — the microstate counting involves quantum statistics and deeper mathematics. But this basic idea holds: entropy is about counting how many ways something can be arranged.)*
 
-$$
-[c] = \text{m/s}
-$$
 
----
+Now let's return to our black hole. 
 
-🧮 **\[Part 5 – Build something with dimensions of area]**
+(A 2D grid circular grid with a Circle representing the Black hole appears )
 
-**You (voiceover or writing on whiteboard):**
-
-> We want to build a quantity with units of **area**, because black hole entropy turns out to be proportional to the **surface area** of the event horizon, not its volume.
-
-> Let’s find a combination of $G$, $\hbar$, and $c$ that has units of area.
-
----
-
-🧮 **\[Part 6 – Dimensional analysis to find the area]**
-
-> We want to find:
-
-$$
-[G]^a [\hbar]^b [c]^c = \text{m}^2
-$$
-
-Break down the units:
-
-* $[G] = \text{m}^3 \cdot \text{kg}^{-1} \cdot \text{s}^{-2}$
-* $[\hbar] = \text{kg} \cdot \text{m}^2 \cdot \text{s}^{-1}$
-* $[c] = \text{m/s}$
-
-So we combine them:
-
-$$
-(\text{m}^3 \cdot \text{kg}^{-1} \cdot \text{s}^{-2})^a 
-\cdot 
-(\text{kg} \cdot \text{m}^2 \cdot \text{s}^{-1})^b 
-\cdot 
-(\text{m} \cdot \text{s}^{-1})^c 
-= \text{m}^2
-$$
-
-Solve for $a, b, c$ such that:
-
-* powers of m: $3a + 2b + c = 2$
-* powers of kg: $-a + b = 0$
-* powers of s: $-2a - b - c = 0$
-
-Solve the system:
-
-From $-a + b = 0 \Rightarrow b = a$
-From $-2a - b - c = 0 \Rightarrow -3a - c = 0 \Rightarrow c = -3a$
-Sub into first:
-$3a + 2a -3a = 2 \Rightarrow 2a = 2 \Rightarrow a = 1$
-
-So:
-
-$$
-a = 1, \quad b = 1, \quad c = -3
-$$
-
-That gives us:
-
-$$
-A \sim \frac{G \hbar}{c^3}
-$$
-
----
-
-🔚 **\[Part 7 – Put it all together]**
-
-> If the number of bits is proportional to the surface area of the black hole, then:
-
-$$
-N \sim \frac{A}{G \hbar / c^3}
-$$
-
-> And entropy becomes:
-
-$$
-S \sim k \cdot N \sim k \cdot \frac{A c^3}{G \hbar}
-$$
-
-Which is *almost* the real answer — up to a factor of 4:
-
-$$
-S = \frac{k A c^3}{4 G \hbar}
-$$
-
----
-
-📌 **\[Closing Thoughts – direct to camera]**
-
-**You (calm, reflective):**
-
-> So you don’t need general relativity.
-> You don’t even need quantum gravity.
-
-> Just dimensional analysis — and curiosity.
-
-> To me, that’s what makes physics so beautiful.
-
----
-
-🎵 **\[Outro with calm music, your channel name, maybe a black hole animation]**
-
+Remember, from the outside, you can't tell what kind of matter went into making it — this is the essence of the no-hair theorem. But here's where entropy becomes crucial. Since the black hole could have formed from many different internal configurations that all have the same total mass, its entropy must reflect the maximum number of microstates consistent with that mass. To estimate this, we consider the most "information-rich" configuration: a black hole formed from the largest possible number of particles. And the lightest particles — with the longest wavelengths — are photons. So, the black hole’s entropy must be at least as large as that of a system made entirely from such maximum-entropy photons. This simple counting argument — similar to the logic we used with coins — leads to one of the most profound insights in modern physics: that a black hole’s entropy scales with the number of microstates, ultimately proportional to the area of its event horizon, not its volume.

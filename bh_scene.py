@@ -421,8 +421,20 @@ class WhatIsEntropy(Scene):
         self.wait(2)
 
         # Second transformation: log Omega -> k_B log Omega
-        final_form = MathTex(r"S", r"\propto", r"k_B", r"\log \Omega", font_size=46, substrings_to_isolate=["k_B"]).move_to(ORIGIN)
+        final_form = MathTex(r"S", r"=", r"k_B", r"\log \Omega", font_size=46, substrings_to_isolate=["k_B"]).move_to(ORIGIN)
         final_form.set_color_by_tex(r"k_B", BLUE)
         final_form.set_color_by_tex(r"S", RED)
         self.play(Transform(too_big, final_form))
+        self.wait(2)
+
+        final_form_2 = MathTex(r"S", r"=", r"k_B", r"\log m^N", font_size=46, substrings_to_isolate=["k_B"]).move_to(ORIGIN)
+        final_form_2.set_color_by_tex(r"k_B", BLUE)
+        final_form_2.set_color_by_tex(r"S", RED)
+        self.play(Transform(too_big, final_form_2))
+        self.wait(2)
+
+        final_form_2 = MathTex(r"S", r"=", r"k_B", r"N", font_size=46, substrings_to_isolate=["k_B"]).move_to(ORIGIN)
+        final_form_2.set_color_by_tex(r"k_B", BLUE)
+        final_form_2.set_color_by_tex(r"S", RED)
+        self.play(Transform(too_big, final_form_2))
         self.wait(2)
