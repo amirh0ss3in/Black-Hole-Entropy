@@ -174,36 +174,104 @@ class PhysicalBlackHoleLattice(ThreeDScene):
 
 
 class WhatIsEntropy(Scene):
+    def glow_effect(self, mobject, color=TEAL, layers=5, radius=0.08, opacity_step=0.15):
+        glows = VGroup()
+        for i in range(layers):
+            glow = mobject.copy()
+            glow.set_color(color)
+            glow.set_opacity(opacity_step * (1 - i / layers))
+            glow.scale(1 + radius * (i + 1))
+            glows.add(glow)
+        return glows
+
     def construct(self):
         colors = {
-            "S": RED,      # Entropy
-            "k_B": BLUE,   # Boltzmann Constant
-            "A": GREEN,    # Area
-            "l": PURPLE,   # Planck Length
+            "S": RED,
+            "k_B": BLUE,
+            "A": GREEN,
+            "l": PURPLE,
+            r"\Omega": ORANGE,
         }
 
-        entropy_title = Text("Black Hole Entropy", font_size=46, t2c={"Entropy":TEAL})
-
+        # STEP 1: Add title and formula
+        entropy_title = Text("Black Hole Entropy", font_size=46, t2c={"Entropy": TEAL})
         entr = MathTex(r"S=", substrings_to_isolate="S")
-        bh_formula = MathTex(
-            "k_B",
-            "A",
-            r"\over",
-            "4",
-            r"l",                       
-            r"^2",                        
-            font_size=46,
-        )
-
-        entr.set_color_by_tex(r"S", colors["S"])
+        bh_formula = MathTex("k_B", "A", r"\over", "4", r"l", r"^2", font_size=46)
+        entr.set_color_by_tex("S", colors["S"])
         bh_formula.set_color_by_tex("k_B", colors["k_B"])
         bh_formula.set_color_by_tex("A", colors["A"])
-        bh_formula.set_color_by_tex(r"l", colors["l"])
+        bh_formula.set_color_by_tex("l", colors["l"])
         bh_formula.next_to(entr, RIGHT)
-        bh_formula_entr = VGroup(bh_formula, entr)
+        bh_formula_entr = VGroup(entr, bh_formula)
+        title_group = VGroup(entropy_title, bh_formula_entr).arrange(DOWN, buff=0.6)
+        self.add(title_group)
+        self.wait(1)
 
-        new_premise = VGroup(entropy_title, bh_formula_entr).arrange(DOWN, buff=0.6)
-        new_premise.move_to(ORIGIN)
+        # STEP 2: Isolate and move "Entropy" to center
+        entropy_only = title_group[0][-7:]
+        self.play(
+            FadeOut(title_group[1], *title_group[0][:-7]),
+            entropy_only.animate.move_to(ORIGIN)
+        )
 
-        self.add(new_premise)
-        self.wait(4)
+        # STEP 3: Glow fade in
+        glow = self.glow_effect(entropy_only, color=TEAL)
+        self.play(LaggedStart(*[FadeIn(layer) for layer in glow], lag_ratio=0.1))
+        self.wait(0.6)
+
+        # STEP 4: Glow fade out
+        self.play(LaggedStart(*[FadeOut(layer) for layer in glow], lag_ratio=0.05))
+
+        # STEP 5: Move Entropy to top
+        self.play(entropy_only.animate.to_edge(UP))
+        self.wait(1)
+
+        # STEP 5: Show the coin microstates as a table
+        headers = ["Penny", "Nickel", "Dime"]
+        rows = [
+            ["H", "H", "H"],
+            ["H", "H", "T"],
+            ["H", "T", "H"],
+            ["T", "H", "H"],
+            ["H", "T", "T"],
+            ["T", "H", "T"],
+            ["T", "T", "H"],
+            ["T", "T", "T"],
+        ]
+
+        table = VGroup()
+        header_row = VGroup(*[Text(h, font_size=30).set_color(YELLOW) for h in headers]).arrange(RIGHT, buff=0.8)
+        table.add(header_row)
+
+        for r in rows:
+            row = VGroup(*[Text(cell, font_size=30) for cell in r]).arrange(RIGHT, buff=0.8)
+            table.add(row)
+
+        table.arrange(DOWN, buff=0.4)
+        table.move_to(ORIGIN)
+
+        self.play(FadeOut(entropy_only), run_time=1)
+        self.play(
+            LaggedStart(*[FadeIn(mob) for mob in table], lag_ratio=0.05),
+            run_time=2
+        )
+
+        self.wait(0.7)
+
+        # STEP 6: Move table to the left
+        self.play(table.animate.to_edge(LEFT, buff=1), run_time=1.5)
+        self.wait(0.5)
+
+        # STEP 7: Show multiplicities on the right
+        omega_eqs = VGroup(
+            MathTex(r"\Omega(3\text{ heads}) = 1"),
+            MathTex(r"\Omega(2\text{ heads}) = 3"),
+            MathTex(r"\Omega(1\text{ head}) = 3"),
+            MathTex(r"\Omega(0\text{ heads}) = 1"),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.5).to_edge(RIGHT, buff=3)
+
+        for eq in omega_eqs:
+            eq.set_color_by_tex(r"\Omega", colors[r"\Omega"])
+
+        self.play(LaggedStartMap(FadeIn, omega_eqs, lag_ratio=0.3), run_time=3)
+        self.wait(2)
