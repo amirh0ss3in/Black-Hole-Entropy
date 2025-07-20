@@ -537,7 +537,6 @@ class TwoDBlackHole(Scene):
         self.play(FadeOut(*[m for m in self.mobjects if m not in (r_s, r_s_label, entropy_eq, radius_line)]))
 
         self.wait(1)
-        bh_2d = VGroup(r_s, radius_line, r_s_label)
 
         # Sine-like photon oscillating horizontally inside the black hole
         sine_amplitude = 0.2 * r_bh        # height of wave
@@ -562,3 +561,9 @@ class TwoDBlackHole(Scene):
         self.play(Create(photon_curve), run_time=2)
         self.wait(1)
 
+
+        bh_2d = VGroup(r_s, radius_line, r_s_label, photon_curve)
+        panel = VGroup(bh_2d, entropy_eq)
+
+        self.play(panel.animate.to_edge(LEFT))
+        self.wait(1)
