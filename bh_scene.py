@@ -740,3 +740,14 @@ class Outro(Scene):
         # Step 7: Final hold and optional closing animation
         self.play(final_s.animate.scale(1.2))
         self.wait(3)
+
+        plank_length = MathTex(r"\ell ^2 = \frac{\hbar G}{c^3}").next_to(final_s, buff=3).scale(1.2)
+
+        self.play(Write(plank_length), VGroup(plank_length, final_s).animate.move_to(ORIGIN))
+
+        self.wait(1)
+        bh_formula_entr = MathTex(r"S = \frac{k_B A}{4 \ell ^2}", color = YELLOW_E).scale(1.2).move_to(final_s)
+        self.play(Transform(final_s, bh_formula_entr))
+        self.play(final_s.animate.move_to(ORIGIN), FadeOut(plank_length))
+        self.play(final_s.animate.scale(1.1))
+        self.wait(2)
