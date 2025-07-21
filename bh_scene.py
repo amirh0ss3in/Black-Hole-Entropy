@@ -678,3 +678,65 @@ class TwoDBlackHole(Scene):
         bh_2d_new = VGroup(bh_2d, lambda_label, lambda_line)
         self.play(Transform(entropy_eq, bh_formula), FadeOut(N_eq), FadeOut(bh_2d_new))
         self.wait(2)
+
+ 
+class Outro(Scene):
+    def construct(self):
+        # Step 1: Display the initial formula
+        bh_formula = MathTex(   
+            r"S = \frac{4 k_B G M^2}{\hbar c}",
+            font_size=46,
+        )
+        self.add(bh_formula)
+        self.wait(1)
+
+        # Step 2: Display the black hole area equation
+        area = MathTex(
+            r"A = 4\pi r_s^2 = 4\pi \left( \frac{2GM}{c^2} \right)^2 = \frac{16\pi G^2 M^2}{c^4}",
+            font_size=44
+        )
+        self.play(bh_formula.animate.to_edge(UP))
+        area.next_to(bh_formula, DOWN, buff=0.8)
+        self.play(Write(area))
+        self.wait(2)
+
+        # Step 3: Solve for M^2
+        M2 = MathTex(
+            r"M^2 = \frac{A c^4}{16\pi G^2}",
+            font_size=44
+        )
+        M2.next_to(area, DOWN, buff=0.8)
+        self.play(Write(M2))
+        self.wait(2)
+
+        # Step 4: Substitute M^2 back into entropy formula
+        new_s = MathTex(
+            r"S = \frac{4 k_B G}{\hbar c} \cdot M^2 = "
+            r"\frac{4 k_B G}{\hbar c} \cdot \frac{A c^4}{16\pi G^2} = "
+            r"\frac{k_B c^3 A}{4 \pi G \hbar}",
+            font_size=42
+        )
+        new_s.next_to(M2, DOWN, buff=0.8)
+        self.play(Write(new_s))
+        self.wait(3)
+
+        # Step 5: Final simplified entropy formula
+        final_s = MathTex(
+            r"S = \frac{k_B c^3 A}{4 G \hbar}",
+            font_size=50,
+            color=YELLOW_E
+        )
+
+        # Step 6: Fade out all except final result
+        self.play(
+            FadeOut(bh_formula,shift=UP),
+            FadeOut(area,shift=UP),
+            FadeOut(M2,shift=DOWN),
+            FadeOut(new_s,shift=DOWN),
+            Write(final_s)
+        )
+        self.wait(1)
+
+        # Step 7: Final hold and optional closing animation
+        self.play(final_s.animate.scale(1.2))
+        self.wait(3)
