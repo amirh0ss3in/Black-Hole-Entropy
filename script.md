@@ -34,7 +34,7 @@
 
 🎙 **Voiceover (conversational, warm):**
 
-> Before we dive into the physics of black holes, let’s first ask —
+> But before we dive into the physics of black holes, let’s first ask —
 > What even *is* entropy?
 
 > And to answer that, let’s start simple.
@@ -43,8 +43,8 @@
 > a penny, a nickel, and a dime.
 > Each one lands on either heads or tails.
 
-> If we list out *every possible outcome*, there are just eight.
-> Easy enough to count.
+> If we list out *every possible outcome*, we find there are just eight.
+Let's count them out.
 
 *(The table appears row by row)*
 
@@ -69,13 +69,13 @@
 
 🎙 **Voiceover (insightful tone):**
 
-> Every specific arrangement — each individual row in this table —
-> is called a **microstate**.
+> By the way, Every specific arrangement — each individual row in this table —
+> is something that we physicists, call a **microstate**.
 
 > And when we group those microstates by how many heads they have —
 > that’s what we call a **macrostate**.
 
-> Many microstates can belong to the same macrostate.
+> As you just saw, many microstates can belong to the same macrostate. 
 > That’s the key idea.
 
 *(Microstates and Macrostates labels appear vertically)*
@@ -98,8 +98,6 @@
 > But the number of **macrostates**?
 > Just 101 — ranging from zero heads to one hundred.
 
-> Most of those microstates are clustered near the middle,
-> but still... it’s overwhelming.
 
 ---
 
