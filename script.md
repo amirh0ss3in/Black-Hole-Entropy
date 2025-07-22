@@ -162,72 +162,76 @@ $$
 
 🎬 **\[Scene: *TwoDBlackHole* begins]**
 
-🎙 **Voiceover:**
-> Remember, from the outside, you can't tell what kind of matter went into making it. But here's where entropy becomes crucial. Since the black hole could have formed from many different internal configurations that all have the same total mass, its entropy must reflect the maximum number of microstates consistent with that mass.
+> Remember, from the outside, you can't tell what kind of matter went into making a black hole. All we can measure — in the best-case scenario — is its **mass**, **spin**, and **charge**.
 
-> To estimate this, we consider the most "information-rich" configuration: a black hole formed from the largest possible number of particles. And the lightest particles — with the longest wavelengths — are photons. This simple counting argument — similar to the logic we used with coins — leads to one of the most profound insights in modern physics.
+> But that ignorance is exactly what entropy measures.
 
-> So, how do we actually perform this count? The strategy is to find 'N'—the number of fundamental "bits of information" or microstates that a black hole can contain.
+> Since a black hole can be formed from many different microscopic configurations that all have the same external features, its entropy must reflect the number of possible internal states consistent with those features.
 
-> Once we know N, we can use the fundamental formula for entropy that we discovered earlier.
+*(Particles swirl and collapse into a black hole — same external object from different configurations.)*
 
-*(The equation S = k_B N appears cleanly at the top of the screen)*
+> For ordinary systems, entropy is usually proportional to the number of particles. So if we collapse a system of **N** particles into a black hole, the second law of thermodynamics tells us that the black hole must have entropy at least of order **N**.
 
-> This equation is our tool. The real challenge is finding 'N' for something as mysterious as a black hole.
+> But here’s the twist: the black hole doesn’t care how many particles it started with — it only cares about the total **mass**.
 
-*(A 2D circular grid animates into view, and a black circle fades in at the center, representing the black hole.)*
+> That means the entropy can’t depend on the actual **N**, only on the *maximum* number of particles that **could have made up** that mass.
 
-> Now, let's return to our black hole.
+> To estimate this, we consider the most “information-rich” case: a black hole formed from the **lightest** possible particles — photons.
 
-*(The grid fades away, and a red dashed line appears, marking the event horizon, the point of no return.)*
+> Photons have energy that’s **inversely proportional** to their wavelength. But quantum mechanics tells us: a particle can't be localized to a region smaller than its wavelength. So, if a photon is to be trapped inside a black hole, its wavelength must be able to *fit inside* it — roughly the size of the black hole itself.
 
-> This boundary is the Schwarzschild radius, $r_s$. Anything that crosses it, even light, can never escape.
+> But what do we mean by the *size* of a black hole?
 
-*(A yellow sine wave, representing a photon, is drawn inside the black hole boundary.)*
+> That’s where the **Schwarzschild radius** comes in.
 
-> Quantum mechanics tells us that a particle, like a photon, can't be localized to a space smaller than its wavelength. So, for a photon to be trapped inside a black hole, its wavelength must fit within it. As a rough estimate, let's say the photon's half-wavelength is about the size of the black hole's radius.
+*(Cut to a visual of a spherical mass and gravitational field lines curving around it.)*
 
-*(The scene splits. The black hole visual moves to the left, and a derivation begins on the right.)*
+> The Schwarzschild radius is the critical radius where space and time become so warped that not even light can escape. It's the **point of no return** — the radius of the event horizon for a non-rotating, uncharged black hole.
 
-> Now for a little physics. We start with classical gravity... but we’re headed somewhere profound. We can derive an equation for the velocity needed to escape an object’s gravity.
+> We can derive it using Newtonian gravity, combined with the idea of escape velocity.
 
-*(The equations for gravitational force, potential energy, and escape velocity appear and transform.)*
+*(Now the derivation begins: gravitational force, potential energy, escape velocity → set escape velocity equal to *c* → solve for *r*.)*
 
-> If we ask what happens when that escape velocity equals the speed of light, *c*...
+> When the escape velocity from a mass **M** equals the speed of light **c**, we get:
 
-*(The equation transforms to c² = 2GM/r)*
+> $r_s = \frac{2GM}{c^2}$
 
-> ...we get the formula for the Schwarzschild radius. This is the size a mass *M* must be compressed to in order to become a black hole.
+> Now as said before, we deduced that half-wave lenght of photons should equal to Black Holes radius:
+*(Now the photon’s wavelength formula appears: λ/2 = rₛ → λ = 4GM/c².)*
 
-*(The final Schwarzschild radius formula, r_s = 2GM/c², appears.)*
+> And by that, If a photon just fits inside the black hole, its wavelength is roughly **λ = 4GM/c²**.
 
-> Now we connect our two ideas. If the photon's half-wavelength, λ/2, is equal to the Schwarzschild radius...
+> And from quantum physics, its energy is **ε = hc/λ**.
 
-*(The formula transforms to λ/2 = 2GM/c².)*
+> Now let’s use Einstein’s insight: the total energy of the black hole is **E = Mc²**. And if it’s made of **N** such photons, the total energy is also **Nε**.
 
-> ...we can find the characteristic wavelength of a photon that just fits inside. Now, how many of these photons make up the black hole's total mass?
+> So we set:
 
-*(The photon energy and total energy equations appear: ε = hc/λ and Nε = Mc²)*
+*(Equation appears: Nε = Mc²)*
 
-> To figure that out, we use one of the most powerful ideas in all of physics: the equivalence of mass and energy. The total mass of the black hole, *M*, represents a colossal amount of stored energy: **M times c-squared**. In our model, this energy comes from the sum of all the individual photons we used to build the black hole. If there are **N** photons, and each has an energy **ε**, then the total energy is also **N times ε**.
+> Substituting in for ε:
 
-> These are just two different ways of describing the exact same thing. Therefore, they must be equal: The total energy contained in the mass of the black hole... must equal the combined energy of all the photons inside it.
+*(ε = hc/λ → hc / (4GM/c²) = ε → ε = ħc³ / (4GM))*
 
-*(The equations fade and the derivation for N is shown, substituting the value for λ.)*
+> Now solve for **N**:
 
-> This simple statement, **Nε = Mc²**, is the bridge we need. A bit of algebraic shuffling allows us to solve for N, the number of photons that make up the black hole. We find that N is proportional to the mass of the black hole squared.
+*(Final expression appears: N = Mc² / ε = 4GM² / ħc)*
 
-*(The final expression for N appears: N = 4GM²/ħc)*
+> This gives us the number of photons — or microstates — needed to build the black hole.
 
-> And now for the final step. We take our entropy formula...
+> And now, we return to our entropy formula:
 
-*(S = k_B N moves down next to the expression for N.)*
+*(S = k\_B N appears on screen)*
 
-> ...and substitute in our new expression for N.
+> Substituting in our result for **N**:
 
-*(The formulas combine, and everything else fades away, leaving the new entropy equation.)*
+*(Formulas combine into:
+S = k\_B × (4GM² / ħc) →
+S = (4k\_B GM²) / (ħc))*
 
-> And we arrive at a new formula for black hole entropy, one that depends only on its mass and a few fundamental constants of the universe.
+> And we arrive at a new formula for black hole entropy — one that depends only on its **mass**, and a few **fundamental constants of the universe**.
+
+
 
 ---
 
