@@ -8,6 +8,8 @@ class PhysicalBlackHoleLattice(ThreeDScene):
     metric, providing a more physically meaningful visualization.
     
     V4: Text is now a 2D overlay for perfect readability, fixing the perspective issue.
+    
+    V5 (SYNCED): Timings adjusted to match narration from transcript.
     """
     def construct(self):
         # 1. --- CONFIGURATION ---
@@ -80,97 +82,96 @@ class PhysicalBlackHoleLattice(ThreeDScene):
 
         print("Lattice construction complete.")
         
-        # 5. --- ANIMATION SEQUENCE ---
+        # 5. --- ANIMATION SEQUENCE (SYNCED) ---
         self.add(black_hole)
-        self.play(Create(grid, lag_ratio=0.05, rate_func=smooth), run_time=6)
-        self.wait(1)
         
+        # SYNC: Corresponds to narration from 00:00:00 to 00:11,560
+        # "There are places in the universe... everything we know ends."
+        self.play(Create(grid, lag_ratio=0.05, rate_func=smooth), run_time=11)
+        
+        # SYNC: Corresponds to narration from 00:11,560 to 00:21,900
+        # "For a century we have studied them... we have seen their shadows."
         self.move_camera(
             phi=60 * DEGREES,
             theta=-45 * DEGREES,
             zoom=0.75,
-            run_time=8,
+            run_time=10, # Changed from 8
             rate_func=smooth
         )
-        self.wait(2)
+        
+        # SYNC: Corresponds to narration from 00:21,900 to 00:34,720
+        # "But we were missing... read the message written on the outside."
+        # This is a long pause for narration, so we just wait.
+        self.wait(12) # Changed from wait(2) to cover this long narration segment.
 
         # -----------------------------------------------------------
-        # --- REVEAL SECTION (UPDATED) ---
+        # --- REVEAL SECTION (SYNCED) ---
         # -----------------------------------------------------------
 
-        # Group 3D objects to animate them together
         spacetime_visual = VGroup(black_hole, grid)
-
-        # Start a slow, continuous ambient rotation for dramatic effect
         self.begin_ambient_camera_rotation(rate=0.04, about="phi")
 
-        # Animate the 3D visual to the left to make space for the text
-        self.play(spacetime_visual.animate.scale(0.7).to_edge(LEFT, buff=0.5), run_time=3)
+        # SYNC: Corresponds to narration from 00:34,720 to 00:39,280
+        # "To decipher this message, you'd think you would need the heavy machinery of physics"
+        self.play(spacetime_visual.animate.scale(0.7).to_edge(LEFT, buff=0.5), run_time=4.5) # Changed from 3
 
         TEXT_ANCHOR_X = 4.0
         text_anchor_point = RIGHT * TEXT_ANCHOR_X
 
-        # Define the "hard math" concepts with adjusted font sizes
-        einstein_eq = MathTex(r"R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}", font_size=38) # Slightly smaller
-        tensors = MathTex(r"g_{\mu\nu}", r"\text{ (Spacetime Tensors)}", font_size=44) # Slightly larger than Einstein
+        einstein_eq = MathTex(r"R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}", font_size=38)
+        tensors = MathTex(r"g_{\mu\nu}", r"\text{ (Spacetime Tensors)}", font_size=44)
         geometry = MathTex(r"\Gamma^{\lambda}_{\mu\nu}", r"\text{ (Differential Geometry)}", font_size=44)
         
-        # Position all math concepts at the calculated anchor point
         math_concepts = VGroup(einstein_eq, tensors, geometry).arrange(DOWN, buff=0.7).move_to(text_anchor_point)
         
         self.add_fixed_in_frame_mobjects(math_concepts)
-        math_concepts.set_opacity(0) # Start transparent
+        math_concepts.set_opacity(0)
 
-        # Animate through the "hard math" one by one
+        # SYNC: Corresponds to narration from 00:39,280 to 00:42,260 (approx)
+        # "...Einstein's general relativity..."
         self.play(einstein_eq.animate.set_opacity(1), run_time=1.5); self.wait(1.5)
+        
+        # SYNC: Corresponds to narration from 00:42,260 to 00:45,240
+        # "...the mind-bending math of spacetime tensors..."
         self.play(einstein_eq.animate.set_opacity(0), tensors.animate.set_opacity(1), run_time=1.5); self.wait(1.5)
-        self.play(tensors.animate.set_opacity(0), geometry.animate.set_opacity(1), run_time=1.5); self.wait(1.5)
         
-        # --- THE BIG REVEAL ---
+        # SYNC: Corresponds to narration from 00:45,240 to 00:47,160
+        # "...and differential geometry."
+        self.play(tensors.animate.set_opacity(0), geometry.animate.set_opacity(1), run_time=1.5); self.wait(0.5) # Shortened wait
         
-        colors = {
-            "S": RED,      # Entropy
-            "k_B": BLUE,   # Boltzmann Constant
-            "A": GREEN,    # Area
-            "l": PURPLE,   # Planck Length
-        }
-
+        # --- THE BIG REVEAL (SYNCED) ---
+        
+        colors = {"S": RED, "k_B": BLUE, "A": GREEN, "l": PURPLE}
         entropy_title = Text("Black Hole Entropy", font_size=46, t2c={"Entropy":TEAL})
-
         entr = MathTex(r"S=", substrings_to_isolate="S")
-        bh_formula = MathTex(
-            "k_B",
-            "A",
-            r"\over",
-            "4",
-            r"l",                       
-            r"^2",                        
-            font_size=46,
-        )
-
+        bh_formula = MathTex("k_B", "A", r"\over", "4", r"l", r"^2", font_size=46)
         entr.set_color_by_tex(r"S", colors["S"])
         bh_formula.set_color_by_tex("k_B", colors["k_B"])
         bh_formula.set_color_by_tex("A", colors["A"])
         bh_formula.set_color_by_tex(r"l", colors["l"])
         bh_formula.next_to(entr, RIGHT)
         bh_formula_entr = VGroup(bh_formula, entr)
-
         new_premise = VGroup(entropy_title, bh_formula_entr).arrange(DOWN, buff=0.6)
-
-        # Arrange the new text elements; default arrange is center-aligned.
-        new_premise.move_to(text_anchor_point) # Position the whole group at the anchor
+        new_premise.move_to(text_anchor_point)
 
         self.add_fixed_in_frame_mobjects(new_premise)
-        new_premise.set_opacity(0) # Start transparent
+        new_premise.set_opacity(0)
 
-        # Animate the final, powerful transition
-        self.play(FadeOut(geometry, shift=DOWN), new_premise.animate.set_opacity(1), run_time=2.5)
+        # SYNC: Corresponds to narration from 00:47,160 to 00:52,560
+        # "But what if I told you that we could understand one of the deepest truths..."
+        self.play(FadeOut(geometry, shift=DOWN), new_premise.animate.set_opacity(1), run_time=5) # Changed from 2.5
+        
+        # SYNC: Corresponds to narration from 00:52,560 to 00:58,700
+        # "...their entropy using nothing more than coin flips?"
+        self.wait(6) # Changed from 4
 
-        self.wait(4)
+        # SYNC: Corresponds to narration from 00:58,700 to 01:03,900
+        # "But before we dive into the physics... What even is entropy?"
+        # This is the transition to the next scene.
         self.play(FadeOut(spacetime_visual), run_time=1.5)
         self.stop_ambient_camera_rotation()
-        self.play(new_premise.animate.move_to(ORIGIN))
-        self.wait(1)
+        self.play(new_premise.animate.move_to(ORIGIN), run_time=2) # Added explicit run_time
+        self.wait(1.5) # Slightly longer wait for scene transition
 
 
 class WhatIsEntropy(Scene):
