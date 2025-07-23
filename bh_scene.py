@@ -225,7 +225,7 @@ class WhatIsEntropy(Scene):
 
         # STEP 5: Move Entropy to top
         self.play(entropy_only.animate.to_edge(UP))
-        self.wait(1)
+        self.wait(6)
 
         # STEP 5: Show the coin microstates as a table
         headers = ["Penny", "Nickel", "Dime"]
@@ -260,12 +260,14 @@ class WhatIsEntropy(Scene):
         table.move_to(ORIGIN)
 
         self.play(FadeOut(entropy_only), run_time=1)
+        self.play(FadeIn(table[0]), run_time=1)
+        self.wait(5)
         self.play(
-            LaggedStart(*[FadeIn(mob) for mob in table], lag_ratio=0.05),
-            run_time=2
+            LaggedStart(*[FadeIn(mob) for mob in table[1:]], lag_ratio=0.05),
+            run_time=6
         )
 
-        self.wait(0.7)
+        self.wait(1)
 
         # STEP 6: Move table to the left
         self.play(table.animate.to_edge(LEFT, buff=1), run_time=1.5)
@@ -310,22 +312,22 @@ class WhatIsEntropy(Scene):
 
         # Clear the rectangle and label
         self.play(FadeOut(rect), FadeOut(multiplicity_label))
-        self.wait(1)
+        self.wait(17)
 
         # --- Step 1: Highlight one microstate row ---
         microstate_rect = SurroundingRectangle(table[1], color=ORANGE, buff=0.15)
         microstate_label = Text("Microstate", font_size=28, color=ORANGE).next_to(microstate_rect, RIGHT)
 
         self.play(Create(microstate_rect), FadeIn(microstate_label))
-        self.wait(1)
-
+        self.wait(2)
+    
         # --- Step 2: Flash rectangles quickly around other microstate rows ---
         for i in range(2, len(table)):
             rect = SurroundingRectangle(table[i], color=ORANGE, buff=0.15)
             self.play(FadeIn(rect), run_time=0.4)
             self.play(FadeOut(rect), run_time=0.4)
 
-        self.wait(0.5)
+        self.wait(1)
 
         self.play(FadeOut(microstate_label), FadeOut(microstate_rect))
 
@@ -340,7 +342,7 @@ class WhatIsEntropy(Scene):
         macrostate_label = Text("Macrostate", font_size=28, color=PURPLE).next_to(macrostate_rect, RIGHT)
 
         self.play(Create(macrostate_rect), FadeIn(macrostate_label))
-        self.wait(1)
+        self.wait(2)
 
         # --- Step 5: Flash rectangles around other macrostates quickly ---
         for i in range(1, len(omega_eqs)):
@@ -348,7 +350,7 @@ class WhatIsEntropy(Scene):
             self.play(FadeIn(rect), run_time=0.4)
             self.play(FadeOut(rect), run_time=0.4)
 
-        self.wait(0.5)
+        self.wait(1)
 
         self.play(FadeOut(macrostate_label), FadeOut(macrostate_rect))
 
@@ -360,7 +362,7 @@ class WhatIsEntropy(Scene):
         microstates_vertical.next_to(table, LEFT, buff=0.2)
         
         self.play(FadeIn(macrostates_vertical, microstates_vertical))
-        self.wait(2)
+        self.wait(21)
 
         # --- STEP 8: Show explosion of microstates for larger system ---
         large_system_title = MathTex(r"\text{Now Imagine }100\text{ Coins...}", font_size=40).to_edge(UP)
@@ -387,7 +389,7 @@ class WhatIsEntropy(Scene):
         # Animation
         self.play(FadeOut(table), FadeOut(omega_eqs), FadeOut(macrostates_vertical), FadeOut(microstates_vertical))
         self.play(Write(large_system_title))
-        self.wait(0.5)
+        self.wait(3)
 
         self.play(Write(macro_group), Write(micro_group))
         self.wait(1)
@@ -397,8 +399,7 @@ class WhatIsEntropy(Scene):
 
         # Transform 2^100 into the approximation
         self.play(Transform(micro_expr, micro_approx))
-        self.wait(1.5)
-
+        self.wait(10)
 
 
         # --- STEP 9: Show motivation for logarithm ---
@@ -413,32 +414,47 @@ class WhatIsEntropy(Scene):
             FadeOut(macro_group, macro_mult, shift=LEFT),
             FadeIn(too_big)
         )
-        self.wait(2)
+        self.wait(15)
+
 
         # First transformation: Omega -> log Omega
         log_form = MathTex(r"S", r"\propto", r"\log \Omega", font_size=46).move_to(ORIGIN)
         log_form.set_color_by_tex(r"S", RED)
         self.play(Transform(too_big, log_form))
-        self.wait(2)
+        self.wait(16)
 
         # Second transformation: log Omega -> k_B log Omega
         final_form = MathTex(r"S", r"=", r"k_B", r"\log \Omega", font_size=46, substrings_to_isolate=["k_B"]).move_to(ORIGIN)
         final_form.set_color_by_tex(r"k_B", BLUE)
         final_form.set_color_by_tex(r"S", RED)
         self.play(Transform(too_big, final_form))
-        self.wait(2)
+        self.wait(12)
+
+        # Highlight effect using ShowPassingFlash and SurroundingRectangle
+        rect = SurroundingRectangle(final_form, color=YELLOW, buff=0.15)
+        self.play(ShowPassingFlash(rect, time_width=0.6, run_time=2))
+
+        self.wait(26) 
 
         final_form_2 = MathTex(r"S", r"=", r"k_B", r"\log m^N", font_size=46, substrings_to_isolate=["k_B"]).move_to(ORIGIN)
         final_form_2.set_color_by_tex(r"k_B", BLUE)
         final_form_2.set_color_by_tex(r"S", RED)
         self.play(Transform(too_big, final_form_2))
+        self.wait(12)
+
+        final_form_2 = MathTex(r"S", r"=", r"k_B", r"N \log m", font_size=46, substrings_to_isolate=["k_B"]).move_to(ORIGIN)
+        final_form_2.set_color_by_tex(r"k_B", BLUE)
+        final_form_2.set_color_by_tex(r"S", RED)
+        fo = MathTex(r"(\text{For our purposes, we can assume }\log m = 1 )").next_to(final_form_2, DOWN, buff=0.3)
+        self.play(Transform(too_big, final_form_2), FadeIn(fo))
+
         self.wait(2)
 
         final_form_2 = MathTex(r"S", r"=", r"k_B", r"N", font_size=46, substrings_to_isolate=["k_B"]).move_to(ORIGIN)
         final_form_2.set_color_by_tex(r"k_B", BLUE)
         final_form_2.set_color_by_tex(r"S", RED)
-        self.play(Transform(too_big, final_form_2))
-        self.wait(2)
+        self.play(FadeOut(fo), Transform(too_big, final_form_2))
+        self.wait(20)
 
 
 class TwoDBlackHole(Scene):
