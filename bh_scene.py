@@ -456,15 +456,15 @@ class WhatIsEntropy(Scene):
         self.play(FadeOut(fo), Transform(too_big, final_form_2))
         self.wait(20)
 
-
 class TwoDBlackHole(Scene):
     def construct(self):
+        # Timestamps are relative to 04:55,560
         entropy_eq = MathTex(r"S", r"=", r"k_B", r"N", font_size=46, substrings_to_isolate=["k_B"]).move_to(ORIGIN)
         entropy_eq.set_color_by_tex(r"k_B", BLUE)
         entropy_eq.set_color_by_tex(r"S", RED)
         self.add(entropy_eq)
-        self.wait(2)
-        self.play(entropy_eq.animate.to_edge(UP))
+        self.play(entropy_eq.animate.to_edge(UP), run_time=2.0) # Changed: Animation time for moving the equation up.
+        self.wait(5.16) # Changed: Synced with narration [05:07,520 -> 05:11,680] "But that ignorance is exactly what entropy measures."
 
         # STEP 2: 2D Circular Grid Setup - extend lines to frame edges
         grid = VGroup()
@@ -477,19 +477,14 @@ class TwoDBlackHole(Scene):
             angle = i * TAU / num_radial
             direction = np.array([np.cos(angle), np.sin(angle), 0])
             end = direction * max_length
-            # Opacity fades from 1 near center to ~0 at edge
             line = Line(ORIGIN, end, color=WHITE, stroke_width=1.2)
-            # Use a custom updater to set opacity based on distance from origin
-            # But since it's a line, just fade it overall based on length:
-            # Let's set a linear opacity gradient manually (approximate)
-            # Here simpler: just fixed low opacity for distant lines
             line.set_stroke(opacity=0.15)
             grid.add(line)
 
         # Concentric circles with fading opacity by radius
         for j in range(1, num_circular + 1):
             r = j * max_length / num_circular
-            opacity = max(0.02, 0.3 * (1 - r / max_length))  # fades from 0.3 near center to 0.02 outer edge
+            opacity = max(0.02, 0.3 * (1 - r / max_length))
             circle = Circle(radius=r, color=WHITE, stroke_width=1.2, stroke_opacity=opacity)
             grid.add(circle)
 
@@ -501,201 +496,154 @@ class TwoDBlackHole(Scene):
         glow = Circle(radius=r_bh+0.6, color=BLUE_E, fill_opacity=0.1, stroke_opacity=0)
         glow.set_z_index(-1)
 
-        # black_hole_group = VGroup(glow, black_hole)
-
-        # STEP 4: Animate
+        # STEP 4: Animate black hole creation
+        # Narration [05:11,680 -> 05:26,800] "Since a black hole can be formed..."
         self.play(
             LaggedStartMap(Create, grid, lag_ratio=0.05),
-            run_time=2.5
+            run_time=4.0 # Changed: Adjusted for narration pace.
         )
-        self.wait(0.3)
-        self.play(FadeIn(glow, black_hole, scale=0.95), run_time=1.2)
+        self.wait(1.0) # Changed: Added pause for timing.
+        self.play(FadeIn(glow, black_hole, scale=0.95), run_time=3.0) # Changed: Adjusted for narration pace.
 
-        # Optional: Label
-        label = Text("Black Hole", font_size=28, color=GRAY).next_to(black_hole, DOWN, buff=0.25)
-        self.play(FadeIn(label), run_time=0.8)
-        self.wait(1.5)
+        label = Text("Black Hole", font_size=28, color=LIGHT_GREY).next_to(black_hole, DOWN, buff=0.25)
+        self.play(FadeIn(label), run_time=2.0) # Changed: Adjusted for narration pace.
+        self.wait(5.12) # Changed: Wait for the remainder of the 15.12s narration segment.
 
-        # STEP 6: Draw Schwarzschild radius (same as glow radius)
-        angle = PI / 4  # 45 degrees
+        # Long wait for narration about entropy properties
+        self.wait(26.16) # Changed: Synced with narration [05:26,800 -> 05:52,960] "For ordinary systems... total mass."
 
-        # Dashed circle around origin
+        # Wait for narration segment before photon is introduced
+        self.wait(6.12) # Changed: Synced with narration [05:52,960 -> 05:59,080] "That means the entropy..."
+        
+        # NOTE: The following section has been re-ordered to match the narration's logic:
+        # 1. Fade out label. 2. Introduce photon. 3. Introduce Schwarzschild radius.
+        
+        self.play(FadeOut(label, shift=DOWN), run_time=1.5) # Changed: Fading out label to introduce photon.
+        self.wait(0.5) # Changed: Added pause for timing.
+
+        # Sine-like photon oscillating horizontally inside the black hole
+        sine_amplitude = 0.2 * r_bh
+        sine_length =  2 * r_bh
+        sine_waves = 1
+
+        photon_curve = ParametricFunction(
+            lambda t: np.array([t * sine_length - sine_length / 2, sine_amplitude * np.sin(2 * np.pi * sine_waves * t), 0]),
+            t_range=[0, 1], color=YELLOW, stroke_width=3
+        )
+        photon_curve.move_to(ORIGIN)
+
+        # Create photon as narration mentions it [05:59,080 -> 06:12,680]
+        self.wait(30.08) # Changed: Synced with narration [06:12,680 -> 06:34,040] "Photons have energy... the black hole itself."
+        self.play(Create(photon_curve), run_time=3.0) # Changed: Create photon animation.
+        self.wait(1.88) # Changed: Remainder of narration segment.
+        
+        # Wait while narration explains photon properties
+        self.wait(10.08) # Changed: Synced with narration [06:12,680 -> 06:34,040] "Photons have energy... the black hole itself."
+        
+        # STEP 6: Draw Schwarzschild radius as it's introduced in the narration
+        angle = PI / 4
         r_s = DashedVMobject(Circle(radius=r_bh, color=RED), num_dashes=60)
-
-        # Radius line at angle PI/4
         end_point = r_bh * np.array([np.cos(angle), np.sin(angle), 0])
         radius_line = Line(start=ORIGIN, end=end_point, color=RED)
-
-        # Label aligned with the angle direction
-        r_s_label = MathTex(r"r_s", color=RED)
-        r_s_label.next_to(radius_line.get_end(), direction=radius_line.get_unit_vector(), buff=0.2)
-
-        # Optional: rotate label so it follows the line
+        r_s_label = MathTex(r"r_s", color=RED).next_to(radius_line.get_end(), direction=radius_line.get_unit_vector(), buff=0.2)
         r_s_label.rotate(angle)
 
-        self.add(label)
-        self.wait(1)
-        self.play(
-            FadeOut(label, shift=DOWN),
-            Create(radius_line),
-            Create(r_s),
-            FadeIn(r_s_label),
-            run_time=2
-        )
-        self.wait(2)
-
-
+        self.play(Create(radius_line), Create(r_s), FadeIn(r_s_label), run_time=3.0) # Changed: Create r_s visual.
+        
+        self.wait(14.2) # Changed: Synced with narration [06:43,240 -> 06:57,560] "The Schwarzschild radius is... uncharged black hole."
+        
         r_s.set_z_index(3)
         r_s_label.set_z_index(3)
         entropy_eq.set_z_index(3)
         black_hole.set_z_index(2)
         radius_line.set_z_index(3)
-                
-        self.play(FadeOut(*[m for m in self.mobjects if m not in (r_s, r_s_label, entropy_eq, radius_line)]))
-
-        self.wait(1)
-
-        # Sine-like photon oscillating horizontally inside the black hole
-        sine_amplitude = 0.2 * r_bh        # height of wave
-        sine_length =  2 * r_bh
-        sine_waves = 1                     # number of wave cycles
-
-        photon_curve = ParametricFunction(
-            lambda t: np.array([
-                t * sine_length - sine_length / 2,
-                sine_amplitude * np.sin(2 * np.pi * sine_waves * t),
-                0
-            ]),
-            t_range=[0, 1],
-            color=YELLOW,
-            stroke_width=3
-        )
-
-        # Position it at the center of the black hole
-        photon_curve.move_to(ORIGIN)
-
-        # Animate drawing the photon
-        self.play(Create(photon_curve), run_time=2)
-        self.wait(1)
-
-
-        bh_2d = VGroup(r_s, radius_line, r_s_label, photon_curve)
+        photon_curve.set_z_index(4)
+        
+        # Clean up the scene for the derivation part
+        self.play(FadeOut(*[m for m in self.mobjects if m not in (r_s, r_s_label, entropy_eq, radius_line, black_hole, photon_curve)]), run_time=1.0) # Changed: Fade out grid, keep BH elements.
+         
+        # Transition to the side panel for the derivation
+        bh_2d = VGroup(r_s, radius_line, r_s_label, photon_curve, black_hole)
         panel = VGroup(bh_2d, entropy_eq)
 
-        self.play(panel.animate.to_edge(LEFT))
-        self.wait(1)
-
-        # Gravitational force equation
-        grav_eq = MathTex(r"F = \frac{GMm}{r^2}").move_to(0.1*RIGHT + UP)
-        self.play(Write(grav_eq))
-        self.wait(1)
-        self.play(grav_eq.animate.shift(UP))
-
-        # Potential energy equation (for escape velocity)
+        self.play(panel.animate.to_edge(LEFT), run_time=1.5) # Changed: Animation time.
+        
+        # Show Newtonian Gravity and Potential Energy equations
+        grav_eq = MathTex(r"F = \frac{GMm}{r^2}").move_to(0.1*RIGHT + UP*2)
+        self.play(Write(grav_eq), run_time=1.5) # Changed: Animation time.
         potential_eq = MathTex(r"U = -\frac{GMm}{r}").next_to(grav_eq, DOWN, buff=0.8)
-        self.play(Write(potential_eq))
-        self.wait(1)
-
-        # Group equations and add brace
+        self.play(Write(potential_eq), run_time=1.5) # Changed: Animation time.
+        
         energy_group = VGroup(grav_eq, potential_eq)
         brace = Brace(energy_group, LEFT, color=YELLOW)
-        self.play(FadeIn(brace))
-        self.wait(1)
+        self.play(FadeIn(brace), run_time=0.5) # Changed: Animation time.
+        self.wait(0.36) # Changed: Remainder of narration [06:57,560 -> 07:03,800]
 
-        # Show derivation arrow
+        # Show derivation of escape velocity
         arrow = Arrow(start=0.9*LEFT, end=0.4*RIGHT, color=YELLOW).next_to(energy_group, RIGHT, buff=0.1)
-        self.play(GrowArrow(arrow))
-        self.wait(0.5)
-
-        # Escape velocity derivation (energy conservation)
+        self.play(GrowArrow(arrow), run_time=0.5) # Changed: Animation time.
         solve1 = MathTex(r"\frac{1}{2}mv_e^2", "-", r"\frac{GMm}{r}", "=", "0").next_to(arrow, RIGHT, buff=0.2)
-        self.play(Write(solve1))
-        self.wait(2)
+        self.play(Write(solve1), run_time=2.0) # Changed: Animation time.
+        self.wait(4.26) # Changed: Remainder of narration [07:03,800 -> 07:10,560]
 
-        # Simplify to escape velocity formula
+        # Simplify to escape velocity formula and then to Schwarzschild radius
         solve2 = MathTex(r"v_e^2 = \frac{2GM}{r}").move_to(solve1)
-        self.play(Transform(solve1, solve2))
-        self.wait(1)
+        self.play(Transform(solve1, solve2), run_time=1.5) # Changed: Animation time.
+        
+        self.play(FadeOut(arrow, brace, energy_group, shift=LEFT), solve1.animate.shift(LEFT * 2.5), run_time=1.5) # Changed: Animation time.
 
-        # Transition to Schwarzschild radius
-        self.play(
-            FadeOut(arrow, brace, energy_group, shift=LEFT),
-            solve1.animate.shift(LEFT * 2.5),
-        )
-        self.wait(1)
-
-        # Set escape velocity equal to speed of light
         solve3 = MathTex(r"c^2 = \frac{2GM}{r}").move_to(solve1)
-        self.play(Transform(solve1, solve3))
-        self.wait(1)
+        self.play(Transform(solve1, solve3), run_time=1.5) # Changed: Animation time.
 
-        # Final Schwarzschild radius equation
         solve4 = MathTex(r"r_s = \frac{2GM}{c^2}").move_to(solve1)
-        self.play(Transform(solve1, solve4))
-        self.wait(2)
-
+        self.play(Transform(solve1, solve4), run_time=2.0) # Changed: Animation time.
+        self.wait(8.46) # Changed: Synced with narration [07:10,560 -> 07:25,520] explaining the formula.
+    
+        # Relate wavelength to the radius
         solve5 = MathTex(r"\frac{\lambda}{2} = \frac{2GM}{c^2}").move_to(solve1)
-
-        lambda_line = DashedLine(
-            start=LEFT * r_bh, end=RIGHT * r_bh,
-            color=GRAY, stroke_width=2, dash_length=0.1
-        ).move_to(photon_curve.get_center())
-
-        # Label for λ below the line, centered
+        lambda_line = DashedLine(start=bh_2d.get_left(), end=bh_2d.get_right(), color=GRAY, stroke_width=2, dash_length=0.1).move_to(bh_2d.get_center())
         lambda_label = MathTex(r"\lambda", color=WHITE).next_to(lambda_line, DOWN, buff=0.2)
 
-        self.play(Transform(solve1, solve5), Create(lambda_line), FadeIn(lambda_label))
-        self.wait(1)
+        self.play(Transform(solve1, solve5), Create(lambda_line), FadeIn(lambda_label), run_time=3.0) # Changed: Animation time.
+        self.wait(3.84) # Changed: Synced with narration [07:25,520 -> 07:32,360]
 
-        # Step: Photon energy formula E = hc / λ
-        energy_eq = MathTex(r"\varepsilon = \frac{hc}{\lambda}", font_size=44)
-        energy_eq.next_to(solve1, DOWN, buff=0.5)
+        self.wait(8.88) # Changed: Synced with narration [07:32,360 -> 07:41,240] explaining the deduction.
 
-        self.play(Write(energy_eq))
-        self.wait(1)
+        # Photon energy formula
+        energy_eq = MathTex(r"\varepsilon = \frac{hc}{\lambda}", font_size=44).next_to(solve1, DOWN, buff=0.5)
+        self.play(Write(energy_eq), run_time=2.0) # Changed: Animation time.
+        self.wait(9.0) # Changed: Synced with narration [07:41,240 -> 07:52,240]
 
-        # Step: Total energy relation N ε = M c^2
-        total_energy_eq = MathTex(r"N \varepsilon = M c^2", font_size=44)
-        total_energy_eq.next_to(energy_eq, DOWN, buff=0.6)
+        # Total energy relation
+        total_energy_eq = MathTex(r"N \varepsilon = M c^2", font_size=44).next_to(energy_eq, DOWN, buff=0.6)
+        self.play(Write(total_energy_eq), run_time=3.0) # Changed: Animation time.
+        self.wait(13.74) # Changed: Synced with narration [07:52,240 -> 08:08,980]
 
-        self.play(Write(total_energy_eq))
-        self.wait(1)
+        # Derive N
+        N_eq = MathTex(r"N = \frac{M c^2}{\varepsilon} = \frac{M c^2 \lambda}{h c}", font_size=44).move_to(ORIGIN+2*RIGHT)
+        self.play(FadeOut(energy_eq, total_energy_eq, solve1), Write(N_eq), run_time=3.0) # Changed: Animation time.
+        self.wait(1.0) # Changed: Added pause for timing.
 
-        # Step: Derive N using previous equations
-        N_eq = MathTex(
-            r"N = \frac{M c^2}{\varepsilon} = \frac{M c^2 \lambda}{h c}",
-            font_size=44
-        ).move_to(ORIGIN+2*RIGHT)
+        N_sub_eq = MathTex(r"N = \frac{M c^2}{\varepsilon} = \frac{M c^2 \cdot \frac{4GM}{c^2}}{h c} = \frac{4 G M^2}{h c}", font_size=44).move_to(N_eq)
+        self.play(Transform(N_eq, N_sub_eq), run_time=4.0) # Changed: Animation time.
+        self.wait(4.12) # Changed: Remainder of narration [08:08,980 -> 08:21,100]
 
-        self.play(FadeOut(energy_eq, total_energy_eq, solve1), Write(N_eq))
-        self.wait(1.2)
+        # Substitute N into the entropy formula
+        N_sub_eq_2 = MathTex(r"N = \frac{4 G M^2}{h c}", font_size=44).move_to(N_sub_eq)
+        self.play(Transform(N_eq, N_sub_eq_2), run_time=1.5) # Changed: Part of a sequence.
+        self.wait(3)
+        self.play(entropy_eq.animate.next_to(N_sub_eq_2, UP, buff=0.5), run_time=1.5) # Changed: Part of a sequence.
+        self.wait(0.64) # Changed: Synced with narration [08:21,100 -> 08:24,740] "And now we return..."
+        
+        bh_formula = MathTex(r"S = \frac{4 k_B G M^2}{hc}", font_size=46)
+        bh_2d_new = VGroup(bh_2d, lambda_label, lambda_line) # Group elements to be faded out.
 
-        # Substitute λ = 4GM / c^2
-        N_sub_eq = MathTex(
-            r"N = \frac{M c^2}{\varepsilon} = \frac{M c^2 \cdot \frac{4GM}{c^2}}{h c} = \frac{4 G M^2}{h c}",
-            font_size=44
-        ).move_to(N_eq)
+        self.play(Transform(entropy_eq, bh_formula), FadeOut(N_eq), run_time=4.0) # Changed: Synced with narration [08:24,740 -> 08:31,540] "And we substitute..."
+        self.wait(3) # Changed: Remainder of narration segment.
 
-        self.play(Transform(N_eq, N_sub_eq))
-        self.wait(2)
-
-        N_sub_eq_2 = MathTex(
-            r"N = \frac{4 G M^2}{h c}",
-            font_size=44
-        ).move_to(N_sub_eq)
-
-
-        self.play(entropy_eq.animate.next_to(N_sub_eq, UP), Transform(N_eq, N_sub_eq_2))
-        self.wait(2)
-
-        bh_formula = MathTex(   
-            r"S = \frac{4 k_B G M^2}{hc}",
-            font_size=46,
-        )
-        bh_2d_new = VGroup(bh_2d, lambda_label, lambda_line)
-        self.play(Transform(entropy_eq, bh_formula), FadeOut(N_eq), FadeOut(bh_2d_new))
-        self.wait(2)
-
+        self.play(FadeOut(bh_2d_new), run_time=1.0) # Changed: Fade out the side panel visuals.
+        self.wait(6) # Changed: Synced with narration [08:31,540 -> 08:38,920] "And that depends only..."
+        
  
 class Outro(Scene):
     def construct(self):
