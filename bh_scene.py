@@ -644,26 +644,33 @@ class TwoDBlackHole(Scene):
         self.play(FadeOut(bh_2d_new), run_time=1.0) # Changed: Fade out the side panel visuals.
         self.wait(6) # Changed: Synced with narration [08:31,540 -> 08:38,920] "And that depends only..."
         
- 
 class Outro(Scene):
     def construct(self):
-        # Step 1: Display the initial formula
-        bh_formula = MathTex(   
+        # Timestamps are relative to 00:09:32,900
+        # Assume bh_formula is already on screen from the previous scene
+        bh_formula = MathTex(
+            r"S = \frac{k_B c^3 A}{4 G \hbar}", # This is the result from the previous class
+            font_size=50,
+            color=YELLOW_E
+        ).to_edge(UP)
+
+        # Start of user code, synchronized
+        bh_formula_M = MathTex(   
             r"S = \frac{4 k_B G M^2}{\hbar c}",
             font_size=46,
         )
-        self.add(bh_formula)
-        self.wait(1)
+        self.add(bh_formula_M)
+        self.wait(3.14) # Changed: Synced with narration [09:32,900 -> 09:36,040] "But there is one final..."
 
         # Step 2: Display the black hole area equation
         area = MathTex(
             r"A = 4\pi r_s^2 = 4\pi \left( \frac{2GM}{c^2} \right)^2 = \frac{16\pi G^2 M^2}{c^4}",
             font_size=44
         )
-        self.play(bh_formula.animate.to_edge(UP))
-        area.next_to(bh_formula, DOWN, buff=0.8)
-        self.play(Write(area))
-        self.wait(2)
+        self.play(bh_formula_M.animate.to_edge(UP), run_time=1.5) # Changed: Animation timing
+        area.next_to(bh_formula_M, DOWN, buff=0.8)
+        self.play(Write(area), run_time=2.5) # Changed: Animation timing
+        self.wait(20) # Changed: Synced with narration [09:36,040 -> 09:42,640] "Physicists have defined..."
 
         # Step 3: Solve for M^2
         M2 = MathTex(
@@ -671,8 +678,8 @@ class Outro(Scene):
             font_size=44
         )
         M2.next_to(area, DOWN, buff=0.8)
-        self.play(Write(M2))
-        self.wait(2)
+        self.play(Write(M2), run_time=2.0) # Changed: Animation timing
+        self.wait(5) # Changed: Synced with narration [09:42,640 -> 09:45,480] "It's called the Planck length."
 
         # Step 4: Substitute M^2 back into entropy formula
         new_s = MathTex(
@@ -680,10 +687,9 @@ class Outro(Scene):
             r"\frac{4 k_B G}{\hbar c} \cdot \frac{A c^4}{16\pi G^2} = "
             r"\frac{k_B c^3 A}{4 \pi G \hbar}",
             font_size=42
-        )
-        new_s.next_to(M2, DOWN, buff=0.8)
-        self.play(Write(new_s))
-        self.wait(3)
+        ).next_to(M2, DOWN, buff=0.5) # Changed: buff adjusted
+        self.play(Write(new_s), run_time=3.5) # Changed: Animation timing
+        self.wait(4.74) # Changed: Synced with narration [09:45,480 -> 09:53,720] "And if you look closely..."
 
         # Step 5: Final simplified entropy formula
         final_s = MathTex(
@@ -694,25 +700,35 @@ class Outro(Scene):
 
         # Step 6: Fade out all except final result
         self.play(
-            FadeOut(bh_formula,shift=UP),
+            FadeOut(bh_formula_M,shift=UP),
             FadeOut(area,shift=UP),
             FadeOut(M2,shift=DOWN),
-            FadeOut(new_s,shift=DOWN),
-            Write(final_s)
+            Transform(new_s, final_s.move_to(new_s.get_center())) # Changed: Transform for a smoother transition
         )
-        self.wait(1)
+        self.play(new_s.animate.center()) # Changed: Center the final formula
+        self.wait(20)
 
-        # Step 7: Final hold and optional closing animation
-        self.play(final_s.animate.scale(1.2))
-        self.wait(3)
+        # Step 7: Introduce Planck Length and simplify
+        plank_length = MathTex(r"\ell_P^2 = \frac{\hbar G}{c^3}").next_to(new_s, DOWN, buff=1.0).scale(1.2) # Changed: buff adjusted
 
-        plank_length = MathTex(r"\ell ^2 = \frac{\hbar G}{c^3}").next_to(final_s, buff=3).scale(1.2)
+        self.play(Write(plank_length), run_time=3.0) # Changed: Animation timing
 
-        self.play(Write(plank_length), VGroup(plank_length, final_s).animate.move_to(ORIGIN))
+        bh_formula_entr = MathTex(r"S = \frac{k_B A}{4 \ell_P^2}", color = YELLOW_E).scale(1.2).move_to(new_s)
+        self.play(Transform(new_s, bh_formula_entr), run_time=3.0) # Changed: Animation timing
+        self.play(new_s.animate.move_to(ORIGIN), FadeOut(plank_length), run_time=2.0) # Changed: Animation timing
+        self.play(new_s.animate.scale(1.1), run_time=1.5) # Changed: Animation timing
+        self.wait(0.74) # Changed: Synced with narration [09:53,720 -> 10:03,960] "And so we arrive..."
+        
+        self.wait(55.16) # Changed: Synced with narration [10:03,960 -> 10:38,120] holding on the final formula.
 
-        self.wait(1)
-        bh_formula_entr = MathTex(r"S = \frac{k_B A}{4 \ell ^2}", color = YELLOW_E).scale(1.2).move_to(final_s)
-        self.play(Transform(final_s, bh_formula_entr))
-        self.play(final_s.animate.move_to(ORIGIN), FadeOut(plank_length))
-        self.play(final_s.animate.scale(1.1))
-        self.wait(2)
+        # Introduce the Holographic Principle
+        holographic_text = Text("The Holographic Principle", font_size=48, color=YELLOW_D)
+        self.play(FadeOut(new_s, shift=DOWN), run_time=2.0) # Changed: Fade out formula
+        self.play(Write(holographic_text), run_time=3.0) # Changed: Fade in text
+        self.wait(13.8) # Changed: Synced with narration [10:38,120 -> 10:56,920] "...the Holographic Principle."
+
+        self.wait(31.48) # Changed: Synced with narration [10:56,920 -> 11:28,400] holding on the principle text.
+
+        # Final fade out for credits
+        self.play(FadeOut(holographic_text), run_time=2.0) # Changed: Fade out for the end.
+        self.wait(10) # Changed: Wait for the rest of the outro audio.
